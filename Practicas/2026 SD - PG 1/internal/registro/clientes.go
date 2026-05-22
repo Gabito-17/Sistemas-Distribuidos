@@ -51,7 +51,7 @@ func (r *RegistroClientes) Eliminar(nombre string) {
 }
 
 // ObtenerConexiones devuelve una copia de todas las conexiones activas
-func (r *RegistroClientes) ObtenerConexiones() []net.Conn {
+func (r *RegistroClientes) ObtenerConexiones() map[string]net.Conn {
 	// TODO 5: bloquear para lectura, copiar conexiones a un slice, desbloquear
 
 	//Bloquear lectura
@@ -60,13 +60,12 @@ func (r *RegistroClientes) ObtenerConexiones() []net.Conn {
 	//Desbloquear lectura
 	defer r.mutex.RUnlock()
 
-	//Inicializa el slice
-	scon := make([]net.Conn, 0, len(r.clientes))
-	for _, conexion := range r.clientes {
-		scon = append(scon, conexion)
+	copia := make(map[string]net.Conn)
+	for nombre, conexion := range r.clientes {
+		copia[nombre] = conexion
 	}
 
-	return scon
+	return copia
 }
 
 // Cantidad devuelve el número de clientes conectados
@@ -94,8 +93,8 @@ func (r *RegistroClientes) Nombres() []string {
 	snom := make([]string, 0, len(r.clientes))
 	//Iterar rellenando el Slice
 	for nombre := range r.clientes {
-		snom = append (snom, nombre)
+		snom = append(snom, nombre)
 	}
-	
+
 	return snom
 }
