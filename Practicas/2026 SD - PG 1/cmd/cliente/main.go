@@ -47,10 +47,10 @@ func main() {
 	// mensaje de tipo "identificacion" con Emisor = nombre
 
 	// TODO 22: iniciar una goroutine que escuche mensajes del servidor en paralelo
-	go recibirMensajes(conexion)
 	// La goroutine debe usar protocolo.Decodificar en un bucle e imprimir los mensajes recibidos
-
 	// Si hay error, imprimir y retornar (el servidor cerró la conexión)
+
+	go recibirMensajes(conexion)
 
 	// TODO 23: en el hilo principal, leer líneas de stdin y enviar mensajes de tipo "broadcast" - Hecho
 	// Usar bufio.NewReader(os.Stdin) y ReadString('\n') - Hecho
@@ -97,7 +97,7 @@ func recibirMensajes(conexion net.Conn) {
 
 		if err != nil {
 			log.Println("Desconectado del servidor")
-			return
+			os.Exit(0)
 		}
 
 		fmt.Printf(
